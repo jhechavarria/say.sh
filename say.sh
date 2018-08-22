@@ -70,6 +70,44 @@ saylng ()
 	fi
 }
 
+# Get/Set volume level
+sayvol()
+{
+	cfg=`cat $CFGPATH`;
+	if [$# -ge 1 ]; then
+		if [ $# -ge 2 ]; then
+			num=`echo "0 + $2" | bc`;
+			if [ `echo "$num >= 0 && $num <= 2" | bc`  -eq 1 ]; then
+				cfg[1]="$num";
+			fi
+		fi
+		if [ $# -ge 1 ]; then
+			echo "${cfg[*]}" > $CFGPATH;
+		fi
+	else
+		echo "${cfg[1]}"
+	fi
+}
+
+# Get/Set speed level
+sayspd()
+{
+	cfg=`cat $CFGPATH`;
+	if [$# -ge 1 ]; then
+		if [ $# -ge 3 ]; then
+			num=`echo "0 + $3" | bc`;
+			if [ `echo "$num >= 0.5 && $num <= 1.5" | bc` -eq 1 ]; then
+				cfg[2]="$num";
+			fi
+		fi
+		if [ $# -ge 1 ]; then
+			echo "${cfg[*]}" > $CFGPATH;
+		fi
+	else
+		echo "${cfg[2]}"
+	fi
+}
+
 # Get index of language in languages list
 saylngindex()
 {
