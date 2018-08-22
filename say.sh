@@ -1,14 +1,19 @@
 #!/bin/bash
 
 # Text file and audio files name that will be used by the script
-P2WFILE=".say";
+P2WFILE="say";
+
+# Set paths
+ROOTPATH="$HOME/bin/say/"
+SRCPATH="$ROOTPATH$P2WFILE.sh"
+CFGPATH="$ROOTPATH$P2WFILE.cfg"
+SNDPATH="$ROOTPATH$P2WFILE.wav"
 
 # Accepted languages
 P2WLNGS=( "en-GB" "en-US" "fr-FR" "de-DE" "it-IT" "es-ES" );
-
 P2WLNGSNAME=( 'English (British)' 'English (US)' 'French' 'German' 'Italian' 'Spanish'  );
 
-## Checks if language is supported by the synthesiser
+## Checks if language is supported by synthesiser
 saysupport()
 {
 	for i in "${P2WLNGS[@]}"; do
@@ -19,10 +24,10 @@ saysupport()
 	return 0;
 }
 
-# Set global config: language, volume, speed
+# Get/Set program config: language, volume, speed
 saycfg ()
 {
-	cfg=`cat ~/$P2WFILE.cfg`;
+	cfg=`cat $CFGPATH`;
 	IFS=', ' read -r -a cfg <<<  "$cfg";
 	if [ $# -ge 1  ]; then
 		saysupport $1;
@@ -43,15 +48,15 @@ saycfg ()
 		fi
 	fi
 	if [ $# -ge 1 ]; then
-		echo "${cfg[*]}" > ~/$P2WFILE.cfg;
+		echo "${cfg[*]}" > $CFGPATH;
 	fi
 	echo "${cfg[*]}";
 }
 
-# Change synthesiser lamguage
+# Get/Set synthesiser lamguage
 saylng ()
 {
-	cfg=`cat ~/$P2WFILE.cfg`;
+	cfg=`cat $CFGPATH`;
 	IFS=', ' read -r -a cfg <<<  "$cfg";
 	if [ $# -eq 1  ]; then
 		saysupport $1;
@@ -91,9 +96,10 @@ shutup ()
 	killall play;
 }
 
+# Start synthesiser
 say ()
 {
-	cfg=`cat ~/$P2WFILE.cfg`;
+	cfg=`cat $CFGPATH`;
 	IFS=', ' read -r -a cfg <<<  "$cfg";
 	text=( "$@" );
 	if [ $# -ge 2 -a -f $2  ]; then
@@ -113,26 +119,38 @@ say ()
 		cfg[0]=$1;
 		unset text[0];
 	fi
-	pico2wave -l ${cfg[0]} -w ~/$P2WFILE.wav "${text[*]}";
-	play ~/$P2WFILE.wav vol ${cfg[1]} speed ${cfg[2]};
+	pico2wave -l ${cfg[0]} -w $SNDPATH "${text[*]}";
+	play $SNDPATH vol ${cfg[1]} speed ${cfg[2]};
 }
 
 if [[ "$1" = "install"  ]]; then
-	if [ ! -d $HOME/bin ] | [ $2 = "f" ]; then
-		mkdir $HOME/bin
+	if [ ! -d "$ROOTPATH" ]; then
+		mkdir -p $ROOTPATH
+		echo "Created directory: $ROOTPATH"
 	fi
-	if [ ! -f $HOME/bin/$P2WFILE.sh ] | [ $2 = "f" ]; then
-		mv ./$P2WFILE.sh $HOME/bin
+	if [ ! -f "$SRCPATH" ]; then
+		mv ./$P2WFILE.sh $ROOTPATH
+		echo "Script moved to: $ROOTPATH directory"
 	fi
-	SYSLNG="`echo $LANGUAGE | sed 's/_/-/g'`";
-	sudo apt-get install libttspico-utils sox dialog xsel;
-	if [ ! -f $HOME/$P2WFILE.cfg ] | [ $2 = "f" ]; then
+	if [ ! -f "$CFGPATH" ]; then
+		SYSLNG="`echo $LANGUAGE | sed 's/_/-/g'`";
+		touch $CFGPATH
+		echo -n "Default config set to: "
 		saysupport $SYSLNG
 		if [ $? -eq 1 ]; then
 			saycfg "$SYSLNG" 1 1;
 		else
 			saycfg "en-US" 1 1;
 		fi
+	fi
+	if [ ! "`grep -rnw $HOME/.bashrc -e \". $SRCPATH\"`" > /dev/null ]; then
+		echo ". $SRCPATH" >> "$HOME/.bashrc"
+		echo "Script autoload instruction added to $HOME/.bashrc"
+		source "$HOME/.bashrc"
+		echo "Reloaded source: $HOME/.bashrc"
+	fi
+	if [ "$2" = "d" ]; then
+		sudo apt-get install libttspico-utils sox dialog xsel;
 	fi
 elif [ "$1" = "config" ]; then
 	saycfg $2 $3 $4;
@@ -167,7 +185,7 @@ elif [ "$1" = "lang" ] ; then
 	esac
 	clear
 elif [ "$1" = "say" ]; then
-	if [ pgrep -x "play" > /dev/null ]; then
+	if [ "`pgrep -x play`" > /dev/null ]; then
 		shutup;
 	else
 		TEXT=`xsel`;
