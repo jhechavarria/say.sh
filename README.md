@@ -1,4 +1,4 @@
-# sayy.sh
+# say.sh
 
 This script enables any debian based GNU/Linux distribution to talk! Based on Google's text to speach Android application, it gives you a few commands to ease your TTS experience on Linux.
 
