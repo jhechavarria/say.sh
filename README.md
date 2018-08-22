@@ -8,18 +8,18 @@ This script enables any debian based GNU/Linux distribution to talk! Based on Go
 
 Before installing the script, you will need to install a few dependencies:
 
-. libttspico-utils
-. sox
-. dialog
-. xsel
+- libttspico-utils
+- sox
+- dialog
+- xsel
 
-To install all them at once type the following command:
+To install all of them at once type the following command:
 
 ```
 sudo apt-get install libttspico-utils sox dialog xsel
 ```
 
-As libttspico-utils is a non-free package, it may not be available in your default packqge repositories.
+**Warning:** As libttspico-utils is a non-free package, it may not be available in your default packqge repositories.
 
 ## Install
 
@@ -31,11 +31,11 @@ To start installing the script simply type:
 
 This will go through a few operations required for it to work properly:
 
-. creation of a /home/user/bin/say directory
-. moving the script to newly created directory
-. creating and setting config file within nely created directory
-. adding an instruction to /gome/user/.bashrc file
-. reloading .bashrc file
+- creating a /home/user/bin/say directory
+- moving the script to newly created directory
+- creating and setting config file within newly created directory
+- adding an instruction to /gome/user/.bashrc file
+- reloading .bashrc file
 
 ## Configuration
 
@@ -56,9 +56,13 @@ The script supports over to 6 different languages. Volume and speed can differ f
 **en-GB** British English
 
 **en-US** US English
+
 **fr-FR** French
+
 **de-DE** Deutsch
+
 **es-ES** Spanish
+
 **it-IT** Italiam
 
 ## Commands
@@ -75,7 +79,7 @@ say Hello World!
 
 #### Live changing language
 
-If default configuration language doesn't fit with a text written in different language, you can overwrite it in command call.
+If default configuration language doesn't fit with given text, you can overwrite it in command call.
 
 ```
 say it-IT Buongiorno a tutti!
@@ -87,7 +91,7 @@ say it-IT Buongiorno a tutti!
 echo "Salut tout le monde!" | say
 ```
 
-Even using standard input, language can still be overwrittem:
+Even using standard input, language can still be overwritten:
 
 ```
 echo "I love this app!" | say en-GB
