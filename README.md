@@ -49,7 +49,7 @@ This command sets language to US English, volume to 1.2 and speed to 0.8
 saycfg en-US 1.2 0.8
 ```
 
-The script supports over to 6 different languages. Volume and speed can differ from 0.5 to 1.5.
+The script supports over to 6 different languages. Volume variates from 0 to 2 and speed from 0.5 to 1.5.
 
 ### Available languages
 
@@ -107,8 +107,24 @@ saycfg es-ES 1 1
 
 ### saylng
 
-Sets current languages in configuration
+Sets current language in configuration
 
 ```
 saylng de-DE
+```
+
+### saylng
+
+Sets current volume in configuration. Volume can be set from 0 up tu 2
+
+```
+sayvol 2
+```
+
+### saylng
+
+Sets current speed in configuration. Speed can be set from 0.5 to 1.5
+
+```
+sayspd 1.2
 ```
