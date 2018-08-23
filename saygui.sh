@@ -17,23 +17,26 @@ sayguimenu()
 {
 	while true
 	do
-		VALUE=`zenity --list \
-		  --title="$TITLE | Main menu" \
-		  --column="action" --column="Name" \
-		    "say" "Say something!"\
-		    "lng" "Change language" \
-		    "vol" "Change volume" \
-		    "spd" "Change speed"`
+		WINDOW=`zenity --list \
+				--width=640 --height=480 \
+				--title="$TITLE | Main menu" \
+				--ok-label="Open" \
+				--cancel-label="Exit" \
+				--column="Action" --column="Name" \
+				"say" "Say something!"\
+				"lng" "Language Settings" \
+				"vol" "Volume Settings" \
+				"spd" "Speed Settings"`
 
 		case $? in
 				0)
-					if [ $VALUE = "say" ]; then
+					if [ "$WINDOW" = "say" ]; then
 						sayguisay
-					elif [ $VALUE = "lng" ]; then
+					elif [ "$WINDOW" = "lng" ]; then
 						sayguilng
-					elif [ $VALUE = "vol" ]; then
+					elif [ "$WINDOW" = "vol" ]; then
 						sayguivol
-					elif [ $VALUE = "spd" ]; then
+					elif [ "$WINDOW" = "spd" ]; then
 						sayguispd
 					fi;;
 				1)
@@ -50,13 +53,18 @@ sayguisay()
 {
 	while true
 	do
-		VALUE=`zenity --entry \
+		TEXT=`zenity --entry \
+			--width=640 --height=480 \
 			--title="$TITLE | Say something!" \
 			--text="Type anything you wish to be read:" \
-			--entry-text "$VALUE"`
+			--ok-label="Save" \
+			--cancel-label="Close" \
+			--entry-text "$TEXT"`
 		case $? in
 				0)
-					say "$VALUE";;
+					if ! [ "$TEXT" = "" ]; then
+						say "$TEXT"
+					fi;;
 				1)
 					sayguinotif "Aucune valeur sélectionnée.";
 					break;;
@@ -69,20 +77,25 @@ sayguisay()
 
 sayguilng()
 {
-	VALUE=`zenity --list \
-	  --title="$TITLE | Language" --radiolist  \
-	  --column="" --column="Name" \
-	    "en-US" "English (US)" \
-	    "en-GB" "English (GB)" \
-	    "fr-FR" "French" \
-	    "de-DE" "Deutsch" \
-	    "es-ES" "Spanish" \
-	    "it-IT" "Italian"`
+	LANGUAGE=`zenity --list \
+			--width=640 --height=480 \
+			--title="$TITLE | Language" --radiolist  \
+			--ok-label="Save" \
+			--cancel-label="Close" \
+			--column="" --column="Name" \
+			"en-US" "English (US)" \
+			"en-GB" "English (GB)" \
+			"fr-FR" "French" \
+			"de-DE" "Deutsch" \
+			"es-ES" "Spanish" \
+			"it-IT" "Italian"`
 
 	case $? in
 			0)
-				saylng "$VALUE"
-				sayguinotif "Vous avez choisi $VALUE.";;
+				if ! [ "$LANGUAGE" = "" ]; then
+					saylng "$LANGUAGE"
+					sayguinotif "Vous avez choisi $LANGUAGE."
+				fi;;
 			1)
 				sayguinotif "Aucune valeur sélectionnée.";;
 			-1)
@@ -92,12 +105,18 @@ sayguilng()
 
 sayguivol()
 {
-	VALUE=`zenity --scale --title="$TITLE | Volume" --text="Set new volume level" --value=100 --min-value=0 --max-value=200 --step=1`
-
+	VOLUME=`zenity --scale --title="$TITLE | Volume" \
+			--width=640 --height=480 \
+			--text="Set new volume level" \
+			--ok-label="Save" \
+			--cancel-label="Close" \
+			--value=100 --min-value=0 --max-value=200 --step=1`
 	case $? in
 			0)
-				sayvol "`echo \"$VALUE / 100\" | bc`"
-				sayguinotif "Vous avez choisi $VALUE%.";;
+				if ! [ "$VOLUME" = "" ]; then
+					sayvol "`echo \"$VOLUME / 100\" | bc`"
+					sayguinotif "Vous avez choisi $VOLUME%."
+				fi;;
 			1)
 				sayguinotif "Aucune valeur sélectionnée.";;
 			-1)
@@ -107,12 +126,18 @@ sayguivol()
 
 sayguispd()
 {
-	VALUE=`zenity --scale --title="$TITLE | Speed" --text="Set new speed level" --value=100 --min-value=50 --max-value=150 --step=1`
-
+	SPEED=`zenity --scale --title="$TITLE | Speed" \
+			--width=640 --height=480 \
+			--text="Set new speed level" \
+			--ok-label="Save" \
+			--cancel-label="Close" \
+			--value=100 --min-value=50 --max-value=150 --step=1`
 	case $? in
 			0)
-				sayspd "`echo \"$VALUE / 100\" | bc`"
-				sayguinotif "Vous avez choisi $VALUE%.";;
+				if ! [ "$SPEED" = "" ]; then
+					sayspd "`echo \"$SPEED / 100\" | bc`"
+					sayguinotif "Vous avez choisi $SPEED%."
+				fi;;
 			1)
 				sayguinotif "Aucune valeur sélectionnée.";;
 			-1)
@@ -144,7 +169,8 @@ sayguidial()
 			zenity --error --text="$1"
 		fi
 		if [ $TYPE = "question" ]; then
-			echo `zenity --question --text="$1"`
+			zenity --question --text="$1"
+			return $?
 		fi
 	fi
 }
