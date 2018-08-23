@@ -53,7 +53,7 @@ saycfg ()
 # Get/Set synthesiser lamguage
 saylng ()
 {
-	cfg=`cat $CFGPATH`;
+	cfg=( `cat $CFGPATH` );
 	if ! [ $# -eq 1  ]; then
 		echo "${cfg[0]}"; return;
 	fi
@@ -63,7 +63,7 @@ saylng ()
 	fi
 	saysupport $text;
 	if [ $? -eq 1  ]; then
-		cfg[0]=$text
+		cfg[0]="$text"
 		echo "${cfg[*]}" > $CFGPATH
 	else
 		echo "\"$1\" is unsupported. Supported languages: ${P2WLNGS[*]}";
@@ -218,8 +218,8 @@ elif [ "$1" = "install" ]; then
 		sudo apt-get install libttspico-utils sox zenity xsel;
 	fi
 elif [ "$1" = "uninstall" ]; then
-	cat "$HOME/.bashrc" | grep -v "$SRCPATH" > ~/.bashrc
-	echo "Script autoload instruction removed from $HOME/.bashrc"
+	#cat "$HOME/.bashrc" | grep -v "$SRCPATH" > ~/.bashrc
+	#echo "Script autoload instruction removed from $HOME/.bashrc"
 	source "$HOME/.bashrc"
 	echo "Reloaded source: $HOME/.bashrc"
 	rm -rf "$ROOTPATH"
