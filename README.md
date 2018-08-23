@@ -37,6 +37,16 @@ This will go through a few operations required for it to work properly:
 - adding an instruction to /gome/user/.bashrc file
 - reloading .bashrc file
 
+## Uninstall
+
+As easy as installing, to remove everything type:
+
+```
+./say.sh uninstall
+```
+
+This operation does not remove dependencies as some of them might be native.
+
 ## Configuration
 
 During setup a default configuration will be set. You still can change it using the **saycfg** command. This command takes 3 arguments: language, volume and speed.
