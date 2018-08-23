@@ -132,14 +132,14 @@ say ()
 	cfg=`cat $CFGPATH`;
 	IFS=', ' read -r -a cfg <<<  "$cfg";
 	text=( "$@" );
-	if [ $# -ge 2 -a -f $2  ]; then
-		unset text[1];
-		tmp=`cat $2`;
-		text=( "${text[@]}" "${tmp[@]}"  );
+	if [ $# -ge 2 ]; then
+		if [ -f $2  ]; then
+			unset text[1];
+			tmp=`cat $2`;
+			text=( "${text[@]}" "${tmp[@]}"  );
+		fi
 	fi
-	if [ -t 0 ]; then
-		echo "Interactive Mode";
-	else
+	if [ ! -t 0 ]; then
 		while read -a line; do
 			text=( "${text[@]}" "${line[@]}"  );
 		done
@@ -148,6 +148,10 @@ say ()
 	if [[ "$?" = "1" ]]; then
 		cfg[0]=$1;
 		unset text[0];
+	fi
+	if [ `echo "${text[*]}" | wc -c` -eq 1 ]; then
+		echo "Give me something to say!"
+		return
 	fi
 	pico2wave -l ${cfg[0]} -w $SNDPATH "${text[*]}";
 	play $SNDPATH vol ${cfg[1]} speed ${cfg[2]};
