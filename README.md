@@ -113,7 +113,7 @@ Sets current language in configuration
 saylng de-DE
 ```
 
-### saylng
+### sayvol
 
 Sets current volume in configuration. Volume can be set from 0 up tu 2
 
@@ -121,7 +121,7 @@ Sets current volume in configuration. Volume can be set from 0 up tu 2
 sayvol 2
 ```
 
-### saylng
+### sayspd
 
 Sets current speed in configuration. Speed can be set from 0.5 to 1.5
 
