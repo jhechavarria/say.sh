@@ -109,6 +109,8 @@ saycfg es-ES 1 1
 
 Sets current language in configuration
 
+**-d** option can be set instead of language to reset system default language
+
 ```
 saylng de-DE
 ```
