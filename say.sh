@@ -16,11 +16,18 @@ P2WLNGSNAME=( 'English (British)' 'English (US)' 'French' 'German' 'Italian' 'Sp
 ## Checks if language is supported by synthesiser
 saysupport()
 {
-	for i in "${P2WLNGS[@]}"; do
-		if [[ "$i" = "$1" ]]; then
-			return 1;
+	re='^[a-z]{2}\-[A-Z]{2}$';
+
+	if [ $# -eq 1 ]; then
+		if ! [[ $1 =~ $re ]]; then
+			return 0
 		fi
-	done
+		for i in "${P2WLNGS[@]}"; do
+			if [[ "$i" = "$1" ]]; then
+				return 1;
+			fi
+		done
+	fi
 	return 0;
 }
 
@@ -36,15 +43,21 @@ saycfg ()
 		fi
 	fi
 	if [ $# -ge 2 ]; then
-		num=`echo "0 + $2" | bc`;
-		if [ `echo "$num >= 0 && $num <= 2" | bc`  -eq 1 ]; then
-			cfg[1]="$num";
+		re='^[0-2](\.[0-9])?$'
+		if [[ $2 =~ $re ]]; then
+			num=`echo "0 + $2" | bc`;
+			if [ `echo "$num >= 0 && $num <= 2" | bc`  -eq 1 ]; then
+				cfg[1]="$num";
+			fi
 		fi
 	fi
 	if [ $# -ge 3 ]; then
-		num=`echo "0 + $3" | bc`;
-		if [ `echo "$num >= 0.5 && $num <= 1.5" | bc` -eq 1 ]; then
-			cfg[2]="$num";
+		re='^[0-2](\.[0-9])?$'
+		if [[ $2 =~ $re ]]; then
+			num=`echo "0 + $3" | bc`;
+			if [ `echo "$num >= 0.5 && $num <= 1.5" | bc` -eq 1 ]; then
+				cfg[2]="$num";
+			fi
 		fi
 	fi
 	if [ $# -ge 1 ]; then
@@ -74,11 +87,14 @@ saylng ()
 sayvol()
 {
 	cfg=( `cat $CFGPATH` )
-	if [ $# -ge 1 ]; then
-		num=`echo "0 + $1" | bc`
-		if [ `echo "$num >= 0 && $num <= 2" | bc`  -eq 1 ]; then
-			cfg[1]="$num"
-			echo "${cfg[*]}" > $CFGPATH
+	if [ $# -eq 1 ]; then
+		re='^[0-2](\.[0-9])?$'
+		if [[ $1 =~ $re ]]; then
+			num=`echo "0 + $1" | bc`
+			if [ `echo "$num >= 0 && $num <= 2" | bc`  -eq 1 ]; then
+				cfg[1]="$num"
+				echo "${cfg[*]}" > $CFGPATH
+			fi
 		fi
 	else
 		echo "${cfg[1]}"
@@ -89,11 +105,14 @@ sayvol()
 sayspd()
 {
 	cfg=( `cat $CFGPATH` );
-	if [ $# -ge 1 ]; then
-		num=`echo "0 + $1" | bc`
-		if [ `echo "$num >= 0.5 && $num <= 1.5" | bc` -eq 1 ]; then
-			cfg[2]="$num"
-			echo "${cfg[*]}" > $CFGPATH
+	if [ $# -eq 1 ]; then
+		re='^[0-2](\.[0-9])?$'
+		if [[ $1 =~ $re ]]; then
+			num=`echo "0 + $1" | bc`
+			if [ `echo "$num >= 0.5 && $num <= 1.5" | bc` -eq 1 ]; then
+				cfg[2]="$num"
+				echo "${cfg[*]}" > $CFGPATH
+			fi
 		fi
 	else
 		echo "${cfg[2]}"
@@ -104,8 +123,12 @@ sayspd()
 saylngindex()
 {
 	i=0;
+	re='^[a-z]{2}\-[A-Z]{2}$';
 
 	if [ $# -eq 1  ]; then
+		if ! [[ $1 =~ $re ]]; then
+			return 0
+		fi
 		TEST=$1;
 	else
 		TEST=`saylng`;
@@ -123,7 +146,7 @@ saylngindex()
 # Stops audio playback
 shutup ()
 {
-	killall play;
+	killall -9 play;
 }
 
 # Start synthesiser
@@ -145,7 +168,7 @@ say ()
 		done
 	fi
 	saysupport $1;
-	if [[ "$?" = "1" ]]; then
+	if [[ $? -eq 1 ]]; then
 		cfg[0]=$1;
 		unset text[0];
 	fi
@@ -223,6 +246,7 @@ elif [ "$1" = "say" ]; then
 		shutup;
 	else
 		TEXT=`xsel`;
+		echo "$TEXT";
 		echo "$TEXT" | say;
 	fi
 fi
