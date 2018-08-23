@@ -9,7 +9,7 @@ P2WFILE="say";
 # Set paths
 ROOTPATH="$HOME/bin/say/"
 SRCPATH="$ROOTPATH$P2WFILE.sh"
-GUIPATH="$ROOTPATH$P2WFILEgui.sh"
+GUIPATH="$ROOTPATH${P2WFILE}gui.sh"
 CFGPATH="$ROOTPATH$P2WFILE.cfg"
 SNDPATH="$ROOTPATH$P2WFILE.wav"
 
@@ -138,6 +138,12 @@ saydeflng()
 	else
 		echo "en-US";
 	fi
+}
+
+# Starts GUI window
+saygui()
+{
+	. $GUIPATH $1
 }
 
 # Stops audio playback
