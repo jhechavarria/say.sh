@@ -54,25 +54,19 @@ saycfg ()
 saylng ()
 {
 	cfg=`cat $CFGPATH`;
-	if [ $# -eq 1  ]; then
-		text=$1
-		if [ $1 = "-d" ]; then
-			saysupport $SYSLNG
-			if [ $? -eq 1 ]; then
-				text="$SYSLNG";
-			else
-				text="en-US";
-			fi
-		fi
-		saysupport $text;
-		if [ $? -eq 1  ]; then
-			cfg[0]=$text
-			echo "${cfg[*]}" > $CFGPATH
-		else
-			echo "\"$1\" is unsupported. Supported languages: ${P2WLNGS[*]}";
-		fi
+	if ! [ $# -eq 1  ]; then
+		echo "${cfg[0]}"; return;
+	fi
+	text=$1
+	if [ $1 = "-d" ]; then
+		text="`saydeflng`"
+	fi
+	saysupport $text;
+	if [ $? -eq 1  ]; then
+		cfg[0]=$text
+		echo "${cfg[*]}" > $CFGPATH
 	else
-		echo "${cfg[0]}";
+		echo "\"$1\" is unsupported. Supported languages: ${P2WLNGS[*]}";
 	fi
 }
 
@@ -119,21 +113,30 @@ saylngindex()
 	re='^[a-z]{2}\-[A-Z]{2}$';
 
 	if [ $# -eq 1  ]; then
-		if ! [[ $1 =~ $re ]]; then
-			return 0
+		if [[ $1 =~ $re ]]; then
+			TEST=$1;
 		fi
-		TEST=$1;
-	else
+	fi
+	if [ $TEST = "" ]; then
 		TEST=`saylng`;
 	fi
 	for LNG in "${P2WLNGS[@]}"; do
 		if [[ "$LNG" = "$TEST" ]]; then
 			echo $i;
-			return 1;
 		fi
 		i=`expr $i + 1`;
 	done
-	return 0;
+}
+
+# Get system language if supported or a default one
+saydeflng()
+{
+	saysupport $SYSLNG
+	if [ $? -eq 1 ]; then
+		echo "$SYSLNG";
+	else
+		echo "en-US";
+	fi
 }
 
 # Stops audio playback
@@ -185,12 +188,7 @@ if [[ "$1" = "install"  ]]; then
 	if [ ! -f "$CFGPATH" ]; then
 		touch $CFGPATH
 		echo -n "Default config set to: "
-		saysupport $SYSLNG
-		if [ $? -eq 1 ]; then
-			saycfg "$SYSLNG" 1 1;
-		else
-			saycfg "en-US" 1 1;
-		fi
+		saycfg "`saydeflng`" 1 1;
 	fi
 	if [ ! "`grep -rnw $HOME/.bashrc -e \". $SRCPATH\"`" > /dev/null ]; then
 		echo ". $SRCPATH" >> "$HOME/.bashrc"
@@ -198,7 +196,7 @@ if [[ "$1" = "install"  ]]; then
 		source "$HOME/.bashrc"
 		echo "Reloaded source: $HOME/.bashrc"
 	fi
-	if [ "$2" = "d" ]; then
+	if [ "$2" = "-d" ]; then
 		sudo apt-get install libttspico-utils sox dialog xsel;
 	fi
 elif [ "$1" = "config" ]; then
@@ -217,6 +215,8 @@ elif [ "$1" = "lang" ] ; then
 			"es-ES" "Spanish" 2> $fichtemp
 	valret=$?
 	choix=`cat $fichtemp`
+	saylngindex
+	idx=$?
 	case $valret in
 		 0)
 			saylng $choix;
