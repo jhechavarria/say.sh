@@ -65,7 +65,19 @@ The script supports over to 6 different languages. Volume variates from 0 to 2 a
 
 **it-IT** Italiam
 
+## Keyboard shortcut
+
+A keyboard shortcut can be set to use TTS functionnalities puside terminal. Simply set a new keyboard shortcut with the following command:
+
+```
+. bin/say/say.sh say
+```
+
+This keyboard shortcut will start reading any text selected with your mouse. To stop reading, press the keyboard shortcut again.
+
 ## Commands
+
+The following commands are available in command line
 
 ### say
 
@@ -105,14 +117,24 @@ Set full configuration
 saycfg es-ES 1 1
 ```
 
+**-d** option can be set instead of language to reset system default language
+
+```
+saycfg -d 2 1.5
+```
+
 ### saylng
 
 Sets current language in configuration
 
+```
+saylng de-DE
+```
+
 **-d** option can be set instead of language to reset system default language
 
 ```
-saylng de-DE
+saylng -d
 ```
 
 ### sayvol
