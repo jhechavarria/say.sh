@@ -176,7 +176,7 @@ say ()
 		echo "Give me something to say!"
 		return
 	fi
-	pico2wave -l ${cfg[0]} -w $SNDPATH "${text[*]}";
+	pico2wave -l ${cfg[0]} -w $SNDPATH "\"${text[*]}\"";
 	play $SNDPATH vol ${cfg[1]} speed ${cfg[2]};
 }
 
@@ -245,8 +245,6 @@ elif [ "$1" = "say" ]; then
 	if [ "`pgrep -x play`" > /dev/null ]; then
 		shutup;
 	else
-		TEXT=`xsel`;
-		echo "$TEXT";
-		echo "$TEXT" | say;
+		say "`xsel`" ;
 	fi
 fi
