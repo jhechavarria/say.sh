@@ -182,7 +182,18 @@ say ()
 	play $SNDPATH vol ${cfg[1]} speed ${cfg[2]};
 }
 
-if [[ "$1" = "install"  ]]; then
+# Script related instructions
+if [ "$1" = "config" ]; then
+	saycfg $2 $3 $4;
+elif [ "$1" = "gui" ]; then
+	saygui $2;
+elif [ "$1" = "say" ]; then
+	if [ "`pgrep -x play`" > /dev/null ]; then
+		shutup;
+	else
+		say "`xsel`" ;
+	fi
+elif [ "$1" = "install" ]; then
 	if [ ! -d "$ROOTPATH" ]; then
 		mkdir -p $ROOTPATH
 		echo "Created directory: $ROOTPATH"
@@ -206,14 +217,11 @@ if [[ "$1" = "install"  ]]; then
 	if [ "$2" = "-d" ]; then
 		sudo apt-get install libttspico-utils sox zenity xsel;
 	fi
-elif [ "$1" = "config" ]; then
-	saycfg $2 $3 $4;
-elif [ "$1" = "gui" ]; then
-	saygui $2;
-elif [ "$1" = "say" ]; then
-	if [ "`pgrep -x play`" > /dev/null ]; then
-		shutup;
-	else
-		say "`xsel`" ;
-	fi
+elif [ "$1" = "uninstall" ]; then
+	cat "$HOME/.bashrc" | grep -v "$SRCPATH" > ~/.bashrc
+	echo "Script autoload instruction removed from $HOME/.bashrc"
+	source "$HOME/.bashrc"
+	echo "Reloaded source: $HOME/.bashrc"
+	rm -rf "$ROOTPATH"
+	echo "Directory removed: $ROOTPATH"
 fi
