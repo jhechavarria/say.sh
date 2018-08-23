@@ -37,7 +37,7 @@ saysupport()
 # Get/Set program config: language, volume, speed
 saycfg ()
 {
-	cfg=`cat $CFGPATH`;
+	cfg="`cat $CFGPATH`";
 	if [ $# -ge 1  ]; then
 		saylng $1
 		if [ $# -ge 2 ]; then
@@ -47,7 +47,7 @@ saycfg ()
 			fi
 		fi
 	fi
-	echo "${cfg[*]}";
+	echo $cfg;
 }
 
 # Get/Set synthesiser lamguage
