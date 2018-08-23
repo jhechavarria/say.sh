@@ -56,7 +56,7 @@ saycfg ()
 # Get/Set synthesiser lamguage
 saylng ()
 {
-	cfg=( `cat $CFGPATH` );
+	cfg=`cat $CFGPATH`;
 	IFS=', ' read -r -a cfg <<<  "$cfg";
 	if [ $# -eq 1  ]; then
 		saysupport $1;
