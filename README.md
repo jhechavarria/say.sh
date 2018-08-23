@@ -10,13 +10,13 @@ Before installing the script, you will need to install a few dependencies:
 
 - libttspico-utils
 - sox
-- dialog
+- zenity
 - xsel
 
 To install all of them at once type the following command:
 
 ```
-sudo apt-get install libttspico-utils sox dialog xsel
+sudo apt-get install libttspico-utils sox zenity xsel
 ```
 
 **Warning:** As libttspico-utils is a non-free package, it may not be available in your default packqge repositories.
@@ -26,7 +26,7 @@ sudo apt-get install libttspico-utils sox dialog xsel
 To start installing the script simply type:
 
 ```
-. say.sh install
+./say.sh install
 ```
 
 This will go through a few operations required for it to work properly:
@@ -70,7 +70,7 @@ The script supports over to 6 different languages. Volume variates from 0 to 2 a
 A keyboard shortcut can be set to use TTS functionnalities puside terminal. Simply set a new keyboard shortcut with the following command:
 
 ```
-. bin/say/say.sh say
+./bin/say/say.sh say
 ```
 
 This keyboard shortcut will start reading any text selected with your mouse. To stop reading, press the keyboard shortcut again.
@@ -108,6 +108,27 @@ Even using standard input, language can still be overwritten:
 ```
 echo "I love this app!" | say en-GB
 ```
+
+### saygui
+
+Provides a GUI window that allows you to manage TTS with your mouse
+
+```
+saygui
+```
+
+You can choose to open a specific window by using an option
+
+```
+saygui lng
+```
+
+Available options are:
+
+- say
+- lng
+- vol
+- spd
 
 ### saycfg
 
