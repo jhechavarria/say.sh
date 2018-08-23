@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# System default language
+SYSLNG="`echo $LANGUAGE | sed 's/_/-/g'`";
+
 # Text file and audio files name that will be used by the script
 P2WFILE="say";
 
@@ -70,11 +73,20 @@ saycfg ()
 saylng ()
 {
 	cfg=`cat $CFGPATH`;
-	IFS=', ' read -r -a cfg <<<  "$cfg";
 	if [ $# -eq 1  ]; then
-		saysupport $1;
+		text=$1
+		if [ $1 = "-d" ]; then
+			saysupport $SYSLNG
+			if [ $? -eq 1 ]; then
+				text="$SYSLNG";
+			else
+				text="en-US";
+			fi
+		fi
+		saysupport $text;
 		if [ $? -eq 1  ]; then
-			saycfg "$1"
+			cfg[0]=$text
+			echo "${cfg[*]}" > $CFGPATH
 		else
 			echo "\"$1\" is unsupported. Supported languages: ${P2WLNGS[*]}";
 		fi
@@ -190,7 +202,6 @@ if [[ "$1" = "install"  ]]; then
 		echo "Script moved to: $ROOTPATH directory"
 	fi
 	if [ ! -f "$CFGPATH" ]; then
-		SYSLNG="`echo $LANGUAGE | sed 's/_/-/g'`";
 		touch $CFGPATH
 		echo -n "Default config set to: "
 		saysupport $SYSLNG
