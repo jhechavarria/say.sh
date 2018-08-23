@@ -56,7 +56,7 @@ saycfg ()
 # Get/Set synthesiser lamguage
 saylng ()
 {
-	cfg=`cat $CFGPATH`;
+	cfg=( `cat $CFGPATH` );
 	IFS=', ' read -r -a cfg <<<  "$cfg";
 	if [ $# -eq 1  ]; then
 		saysupport $1;
@@ -73,16 +73,12 @@ saylng ()
 # Get/Set volume level
 sayvol()
 {
-	cfg=`cat $CFGPATH`;
+	cfg=( `cat $CFGPATH` )
 	if [ $# -ge 1 ]; then
-		if [ $# -ge 2 ]; then
-			num=`echo "0 + $2" | bc`;
-			if [ `echo "$num >= 0 && $num <= 2" | bc`  -eq 1 ]; then
-				cfg[1]="$num";
-			fi
-		fi
-		if [ $# -ge 1 ]; then
-			echo "${cfg[*]}" > $CFGPATH;
+		num=`echo "0 + $1" | bc`
+		if [ `echo "$num >= 0 && $num <= 2" | bc`  -eq 1 ]; then
+			cfg[1]="$num"
+			echo "${cfg[*]}" > $CFGPATH
 		fi
 	else
 		echo "${cfg[1]}"
@@ -92,16 +88,12 @@ sayvol()
 # Get/Set speed level
 sayspd()
 {
-	cfg=`cat $CFGPATH`;
+	cfg=( `cat $CFGPATH` );
 	if [ $# -ge 1 ]; then
-		if [ $# -ge 3 ]; then
-			num=`echo "0 + $3" | bc`;
-			if [ `echo "$num >= 0.5 && $num <= 1.5" | bc` -eq 1 ]; then
-				cfg[2]="$num";
-			fi
-		fi
-		if [ $# -ge 1 ]; then
-			echo "${cfg[*]}" > $CFGPATH;
+		num=`echo "0 + $1" | bc`
+		if [ `echo "$num >= 0.5 && $num <= 1.5" | bc` -eq 1 ]; then
+			cfg[2]="$num"
+			echo "${cfg[*]}" > $CFGPATH
 		fi
 	else
 		echo "${cfg[2]}"
