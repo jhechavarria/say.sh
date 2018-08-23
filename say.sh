@@ -38,33 +38,14 @@ saysupport()
 saycfg ()
 {
 	cfg=`cat $CFGPATH`;
-	IFS=', ' read -r -a cfg <<<  "$cfg";
 	if [ $# -ge 1  ]; then
-		saysupport $1;
-		if [ $? -eq 1  ]; then
-			cfg[0]="$1";
-		fi
-	fi
-	if [ $# -ge 2 ]; then
-		re='^[0-2](\.[0-9])?$'
-		if [[ $2 =~ $re ]]; then
-			num=`echo "0 + $2" | bc`;
-			if [ `echo "$num >= 0 && $num <= 2" | bc`  -eq 1 ]; then
-				cfg[1]="$num";
+		saylng $1
+		if [ $# -ge 2 ]; then
+			sayvol $2
+			if [ $# -ge 3 ]; then
+				sayspd $3
 			fi
 		fi
-	fi
-	if [ $# -ge 3 ]; then
-		re='^[0-2](\.[0-9])?$'
-		if [[ $2 =~ $re ]]; then
-			num=`echo "0 + $3" | bc`;
-			if [ `echo "$num >= 0.5 && $num <= 1.5" | bc` -eq 1 ]; then
-				cfg[2]="$num";
-			fi
-		fi
-	fi
-	if [ $# -ge 1 ]; then
-		echo "${cfg[*]}" > $CFGPATH;
 	fi
 	echo "${cfg[*]}";
 }
