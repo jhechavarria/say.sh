@@ -22,7 +22,8 @@ sayguimenu()
 				--title="$TITLE | Main menu" \
 				--ok-label="Open" \
 				--cancel-label="Exit" \
-				--column="Action" --column="Name" \
+				--hide-column=1 \
+				--column="Action" --column="Menu Option" \
 				"say" "Say something!"\
 				"lng" "Language Settings" \
 				"vol" "Volume Settings" \
@@ -79,10 +80,11 @@ sayguilng()
 {
 	LANGUAGE=`zenity --list \
 			--width=640 --height=480 \
-			--title="$TITLE | Language" --radiolist  \
+			--title="$TITLE | Language" \
 			--ok-label="Save" \
 			--cancel-label="Close" \
-			--column="" --column="Name" \
+			--hide-column=1 \
+			--column="" --column="Language" \
 			"en-US" "English (US)" \
 			"en-GB" "English (GB)" \
 			"fr-FR" "French" \
