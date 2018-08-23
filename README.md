@@ -83,7 +83,35 @@ A keyboard shortcut can be set to use TTS functionnalities puside terminal. Simp
 ./bin/say/say.sh say
 ```
 
-This keyboard shortcut will start reading any text selected with your mouse. To stop reading, press the keyboard shortcut again.
+This command will start reading any text selected with your mouse. To stop reading, press the keyboard shortcut again.
+
+### Other useful commands
+
+In order to make your end experience even better a few additional commands related to graphical interfaces were made available. You can use then within keyboard shortcuts to open them indipendently.
+
+Open a new window with program settings and graphical TTS reader
+
+```
+./bin/say/say.sh saygui
+```
+
+Open a new window with program language settings
+
+```
+./bin/say/say.sh saygui lng
+```
+
+Open a new window with program volume settings
+
+```
+./bin/say/say.sh saygui vol
+```
+
+Open a new window with program speed settings
+
+```
+./bin/say/say.sh saygui spd
+```
 
 ## Commands
 
