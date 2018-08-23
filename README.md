@@ -32,7 +32,7 @@ To start installing the script simply type:
 This will go through a few operations required for it to work properly:
 
 - creating a /home/user/bin/say directory
-- moving the script to newly created directory
+- copying the scripts to newly created directory
 - creating and setting config file within newly created directory
 - adding an instruction to /gome/user/.bashrc file
 - reloading .bashrc file

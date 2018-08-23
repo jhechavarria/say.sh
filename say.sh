@@ -189,8 +189,9 @@ if [[ "$1" = "install"  ]]; then
 		echo "Created directory: $ROOTPATH"
 	fi
 	if [ ! -f "$SRCPATH" ]; then
-		mv ./$P2WFILE.sh $ROOTPATH
-		echo "Script moved to: $ROOTPATH directory"
+		cp ./$P2WFILE.sh $ROOTPATH
+		cp ./${P2WFILE}gui.sh $ROOTPATH
+		echo "Scripts copied to: $ROOTPATH directory"
 	fi
 	if [ ! -f "$CFGPATH" ]; then
 		touch $CFGPATH
@@ -204,42 +205,10 @@ if [[ "$1" = "install"  ]]; then
 		echo "Reloaded source: $HOME/.bashrc"
 	fi
 	if [ "$2" = "-d" ]; then
-		sudo apt-get install libttspico-utils sox dialog xsel;
+		sudo apt-get install libttspico-utils sox zenity xsel;
 	fi
 elif [ "$1" = "config" ]; then
 	saycfg $2 $3 $4;
-elif [ "$1" = "lang" ] ; then
-	DIALOG=${DIALOG=dialog}
-	 fichtemp=`tempfile 2>/dev/null` || fichtemp=/tmp/test$$
-	trap "rm -f $fichtemp" 0 1 2 5 15
-	$DIALOG --clear --title "T - Language" \
-		--menu "Selct synthesiser defaul laguage" 20 51 10 \
-			"en-GB" "English (British)" \
-			"en-US" "English (US)" \
-			"fr-FR" "French" \
-			"de-DE" "German" \
-			"it-IT" "Italan" \
-			"es-ES" "Spanish" 2> $fichtemp
-	valret=$?
-	choix=`cat $fichtemp`
-	saylngindex
-	idx=$?
-	case $valret in
-		 0)
-			saylng $choix;
-			$DIALOG --clear --title "TS - Languge" \
-				--msgbox "${P2WLNGSNAME[`saylngindex $choix`]} is now your default langue." 10 50;
-		 ;;
-		 1)
-			$DIALOG --clear --title "TS - Languge" \
-				--msgbox "${P2WLNGSNAME[`saylngindex`]} remains your default langue." 10 50;
-		 ;;
-		255)
-			$DIALOG --clear --title "TS - Languge" \
-				--msgbox "${P2WLNGSNAME[`saylngindex`]} remains your default langue." 10 50;
-		;;
-	esac
-	clear
 elif [ "$1" = "say" ]; then
 	if [ "`pgrep -x play`" > /dev/null ]; then
 		shutup;
