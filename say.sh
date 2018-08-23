@@ -208,6 +208,8 @@ if [[ "$1" = "install"  ]]; then
 	fi
 elif [ "$1" = "config" ]; then
 	saycfg $2 $3 $4;
+elif [ "$1" = "gui" ]; then
+	saygui $2;
 elif [ "$1" = "say" ]; then
 	if [ "`pgrep -x play`" > /dev/null ]; then
 		shutup;

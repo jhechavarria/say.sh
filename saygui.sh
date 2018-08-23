@@ -8,7 +8,7 @@ GUIPATH="$ROOTPATH$P2WFILEgui.sh"
 CFGPATH="$ROOTPATH$P2WFILE.cfg"
 
 # Main title
-TITLE="SayGUI Config"
+TITLE="SayGUI"
 
 # Load base functions
 . "$SRCPATH"
@@ -81,7 +81,7 @@ sayguilng()
 {
 	LANGUAGE=`zenity --list \
 			--width=640 --height=480 \
-			--title="$TITLE | Language" \
+			--title="$TITLE | Language Settings" \
 			--ok-label="Save" \
 			--cancel-label="Close" \
 			--hide-column=1 \
@@ -108,7 +108,7 @@ sayguilng()
 
 sayguivol()
 {
-	VOLUME=`zenity --scale --title="$TITLE | Volume" \
+	VOLUME=`zenity --scale --title="$TITLE | Volume Settings" \
 			--width=640 --height=480 \
 			--text="Set new volume level" \
 			--ok-label="Save" \
@@ -129,7 +129,7 @@ sayguivol()
 
 sayguispd()
 {
-	SPEED=`zenity --scale --title="$TITLE | Speed" \
+	SPEED=`zenity --scale --title="$TITLE | Speed Settings" \
 			--width=640 --height=480 \
 			--text="Set new speed level" \
 			--ok-label="Save" \
