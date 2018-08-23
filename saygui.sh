@@ -31,8 +31,8 @@ sayguimenu()
 
 		case $? in
 				0)
-					if [ "$WINDOW" = "say" ]; then
-						sayguisay
+					if [ "$WINDOW" = "tts" ]; then
+						sayguitts
 					elif [ "$WINDOW" = "lng" ]; then
 						sayguilng
 					elif [ "$WINDOW" = "vol" ]; then
@@ -50,7 +50,7 @@ sayguimenu()
 	done
 }
 
-sayguisay()
+sayguitts()
 {
 	while true
 	do
@@ -63,6 +63,7 @@ sayguisay()
 			--entry-text "$TEXT"`
 		case $? in
 				0)
+					echo "$TEXT"
 					if ! [ "$TEXT" = "" ]; then
 						say "$TEXT"
 					fi;;
@@ -178,8 +179,8 @@ sayguidial()
 }
 
 if [ $# -eq 1 ]; then
-	if [ $1 = "say" ]; then
-		sayguisay
+	if [ $1 = "tts" ]; then
+		sayguitts
 	elif [ $1 = "lng" ]; then
 		sayguilng
 	elif [ $1 = "vol" ]; then

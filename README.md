@@ -120,12 +120,12 @@ saygui
 You can choose to open a specific window by using an option
 
 ```
-saygui lng
+saygui tts
 ```
 
 Available options are:
 
-- say
+- tts
 - lng
 - vol
 - spd

@@ -38,7 +38,6 @@ saysupport()
 # Get/Set program config: language, volume, speed
 saycfg ()
 {
-	cfg="`cat $CFGPATH`";
 	if [ $# -ge 1  ]; then
 		saylng $1
 		if [ $# -ge 2 ]; then
@@ -48,7 +47,7 @@ saycfg ()
 			fi
 		fi
 	fi
-	echo $cfg;
+	cat "$CFGPATH";
 }
 
 # Get/Set synthesiser lamguage
@@ -143,7 +142,7 @@ saydeflng()
 # Starts GUI window
 saygui()
 {
-	. $GUIPATH $1
+	$GUIPATH $1
 }
 
 # Stops audio playback
@@ -196,7 +195,7 @@ if [[ "$1" = "install"  ]]; then
 	if [ ! -f "$CFGPATH" ]; then
 		touch $CFGPATH
 		echo -n "Default config set to: "
-		saycfg "`saydeflng`" 1 1;
+		saycfg "-d" 1 1;
 	fi
 	if [ ! "`grep -rnw $HOME/.bashrc -e \". $SRCPATH\"`" > /dev/null ]; then
 		echo ". $SRCPATH" >> "$HOME/.bashrc"
