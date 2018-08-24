@@ -75,7 +75,7 @@ The script supports over to 6 different languages. Volume variates from 0 to 2 a
 
 **it-IT** Italiam
 
-## Keyboard shortcut
+## Keyboard shortcuts
 
 A keyboard shortcut can be set to use TTS functionnalities puside terminal. Simply set a new keyboard shortcut with the following command:
 
