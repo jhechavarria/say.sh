@@ -10,9 +10,29 @@ CFGPATH="$ROOTPATH$P2WFILE.cfg"
 # Main title
 TITLE="SayGUI"
 
+# Accepted languages
+P2WLNGS=( "en-GB" "en-US" "fr-FR" "de-DE" "it-IT" "es-ES" );
+P2WLNGSNAME=( 'English (GB)' 'English (US)' 'French' 'German' 'Italian' 'Spanish'  );
+
 # Load base functions
 . "$SRCPATH"
 
+sayguilngname()
+{
+	i=0;
+	re='^[a-z]{2}\-[A-Z]{2}$';
+
+	if ! [ $# -eq 1 ]; then
+		return 0
+	fi
+	for LNG in "${P2WLNGS[@]}"; do
+		if [[ "$LNG" = "$1" ]]; then
+			echo "${P2WLNGSNAME[$i]}"
+			return 1
+		fi
+		i=`expr $i + 1`;
+	done
+}
 sayguimenu()
 {
 	while true
@@ -20,6 +40,7 @@ sayguimenu()
 		WINDOW=`zenity --list \
 				--width=640 --height=480 \
 				--title="$TITLE | Main menu" \
+				--text="" \
 				--ok-label="Open" \
 				--cancel-label="Exit" \
 				--hide-column=1 \
@@ -28,7 +49,7 @@ sayguimenu()
 				"tts" "Say something!"\
 				"lng" "Language Settings" \
 				"vol" "Volume Settings" \
-				"spd" "Speed Settings"`
+				"spd" "Speed Settings" 2> /dev/null`
 
 		case $? in
 				0)
@@ -61,7 +82,7 @@ sayguitts()
 			--text="Type anything you wish to be read:" \
 			--ok-label="Save" \
 			--cancel-label="Close" \
-			--entry-text "$TEXT"`
+			--entry-text "$TEXT" 2> /dev/null`
 		case $? in
 				0)
 					echo "$TEXT"
@@ -80,9 +101,12 @@ sayguitts()
 
 sayguilng()
 {
+	cfg=( `cat $CFGPATH` )
+	lng="`sayguilngname ${cfg[0]}`"
 	LANGUAGE=`zenity --list \
 			--width=640 --height=480 \
 			--title="$TITLE | Language Settings" \
+			--text "Current language: $lng (${cfg[0]})" \
 			--ok-label="Save" \
 			--cancel-label="Close" \
 			--hide-column=1 \
@@ -93,7 +117,7 @@ sayguilng()
 			"fr-FR" "French" \
 			"de-DE" "Deutsch" \
 			"es-ES" "Spanish" \
-			"it-IT" "Italian"`
+			"it-IT" "Italian" 2> /dev/null`
 
 	case $? in
 			0)
@@ -117,7 +141,7 @@ sayguivol()
 			--text="Set new volume level" \
 			--ok-label="Save" \
 			--cancel-label="Close" \
-			--value=$vol --min-value=0 --max-value=200 --step=1`
+			--value=$vol --min-value=0 --max-value=200 --step=1 2> /dev/null`
 	case $? in
 			0)
 				if ! [ "$VOLUME" = "" ]; then
@@ -140,7 +164,7 @@ sayguispd()
 			--text="Set new speed level" \
 			--ok-label="Save" \
 			--cancel-label="Close" \
-			--value=$spd --min-value=50 --max-value=150 --step=1`
+			--value=$spd --min-value=50 --max-value=150 --step=1 2> /dev/null`
 	case $? in
 			0)
 				if ! [ "$SPEED" = "" ]; then
@@ -158,7 +182,7 @@ sayguinotif()
 {
 	zenity --notification\
     --window-icon="info" \
-    --text="$1"
+    --text="$1" 2> /dev/null
 }
 
 sayguidial()
@@ -169,16 +193,16 @@ sayguidial()
 			TYPE="info"
 		fi
 		if [ $TYPE = "info" ]; then
-			zenity --info --text="$1"
+			zenity --info --text="$1" 2> /dev/null
 		fi
 		if [ $TYPE = "warning" ]; then
-			zenity --warning --text="$1"
+			zenity --warning --text="$1" 2> /dev/null
 		fi
 		if [ $TYPE = "error" ]; then
-			zenity --error --text="$1"
+			zenity --error --text="$1" 2> /dev/null
 		fi
 		if [ $TYPE = "question" ]; then
-			zenity --question --text="$1"
+			zenity --question --text="$1" 2> /dev/null
 			return $?
 		fi
 	fi
