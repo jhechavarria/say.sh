@@ -23,8 +23,9 @@ sayguimenu()
 				--ok-label="Open" \
 				--cancel-label="Exit" \
 				--hide-column=1 \
+				--hide-header \
 				--column="Action" --column="Menu Option" \
-				"say" "Say something!"\
+				"tts" "Say something!"\
 				"lng" "Language Settings" \
 				"vol" "Volume Settings" \
 				"spd" "Speed Settings"`
@@ -85,6 +86,7 @@ sayguilng()
 			--ok-label="Save" \
 			--cancel-label="Close" \
 			--hide-column=1 \
+			--hide-header \
 			--column="" --column="Language" \
 			"en-US" "English (US)" \
 			"en-GB" "English (GB)" \
@@ -108,12 +110,14 @@ sayguilng()
 
 sayguivol()
 {
+	cfg=( `cat $CFGPATH` )
+	vol=`echo "${cfg[1]} * 100" | bc`
 	VOLUME=`zenity --scale --title="$TITLE | Volume Settings" \
 			--width=640 --height=480 \
 			--text="Set new volume level" \
 			--ok-label="Save" \
 			--cancel-label="Close" \
-			--value=100 --min-value=0 --max-value=200 --step=1`
+			--value=$vol --min-value=0 --max-value=200 --step=1`
 	case $? in
 			0)
 				if ! [ "$VOLUME" = "" ]; then
@@ -129,12 +133,14 @@ sayguivol()
 
 sayguispd()
 {
+	cfg=( `cat $CFGPATH` )
+	spd=`echo "${cfg[1]} * 100" | bc`
 	SPEED=`zenity --scale --title="$TITLE | Speed Settings" \
 			--width=640 --height=480 \
 			--text="Set new speed level" \
 			--ok-label="Save" \
 			--cancel-label="Close" \
-			--value=100 --min-value=50 --max-value=150 --step=1`
+			--value=$spd --min-value=50 --max-value=150 --step=1`
 	case $? in
 			0)
 				if ! [ "$SPEED" = "" ]; then
