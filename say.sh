@@ -218,12 +218,13 @@ elif [ "$1" = "install" ]; then
 		sudo apt-get install libttspico-utils sox zenity xsel;
 	fi
 elif [ "$1" = "uninstall" ]; then
-	#if [ "`grep -rnw $HOME/.bashrc -e \". $SRCPATH\"`" > /dev/null ]; then
-	#	cat "$HOME/.bashrc" | grep -v "$SRCPATH" > ~/.bashrc
-	#	echo "Script autoload instruction removed from $HOME/.bashrc"
-	#	source "$HOME/.bashrc"
-	#	echo "Reloaded source: $HOME/.bashrc"
-	#fi
+	if [ "`grep -rnw $HOME/.bashrc -e \". $SRCPATH\"`" > /dev/null ]; then
+		test=`cat "$HOME/.bashrc" | grep -v ". $SRCPATH"`
+		echo "$test" > ~/.bashrc
+		echo "Script autoload instruction removed from $HOME/.bashrc"
+		source "$HOME/.bashrc"
+		echo "Reloaded source: $HOME/.bashrc"
+	fi
 	if [ -d "$ROOTPATH" ]; then
 		rm -rf "$ROOTPATH"
 		echo "Directory removed: $ROOTPATH"
