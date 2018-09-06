@@ -92,25 +92,25 @@ In order to make your end experience even better a few additional commands relat
 Open a new window with program settings and graphical TTS reader
 
 ```
-./bin/say/say.sh saygui
+./bin/say/say.sh gui
 ```
 
 Open a new window with program language settings
 
 ```
-./bin/say/say.sh saygui lng
+./bin/say/say.sh gui lng
 ```
 
 Open a new window with program volume settings
 
 ```
-./bin/say/say.sh saygui vol
+./bin/say/say.sh gui vol
 ```
 
 Open a new window with program speed settings
 
 ```
-./bin/say/say.sh saygui spd
+./bin/say/say.sh gui spd
 ```
 
 ## Commands
