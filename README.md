@@ -31,7 +31,7 @@ To start installing the script simply type:
 
 This will go through a few operations required for it to work properly:
 
-- creating a /home/user/bin/say directory
+- creating a /home/user_name/.local/bin/say directory
 - copying the scripts to newly created directory
 - creating and setting config file within newly created directory
 - adding an instruction to /gome/user/.bashrc file
@@ -69,7 +69,7 @@ The script supports over to 6 different languages. Volume variates from 0 to 2 a
 
 **fr-FR** French
 
-**de-DE** Deutsch
+**de-DE** German
 
 **es-ES** Spanish
 
@@ -80,7 +80,7 @@ The script supports over to 6 different languages. Volume variates from 0 to 2 a
 A keyboard shortcut can be set to use TTS functionnalities puside terminal. Simply set a new keyboard shortcut with the following command:
 
 ```
-./bin/say/say.sh say
+./.local/bin/say/say.sh say
 ```
 
 This command will start reading any text selected with your mouse. To stop reading, press the keyboard shortcut again.
@@ -92,25 +92,25 @@ In order to make your end experience even better a few additional commands relat
 Open a new window with program settings and graphical TTS reader
 
 ```
-./bin/say/say.sh gui
+./.local/bin/say/say.sh gui
 ```
 
 Open a new window with program language settings
 
 ```
-./bin/say/say.sh gui lng
+./.local/bin/say/say.sh gui lng
 ```
 
 Open a new window with program volume settings
 
 ```
-./bin/say/say.sh gui vol
+./.local/bin/say/say.sh gui vol
 ```
 
 Open a new window with program speed settings
 
 ```
-./bin/say/say.sh gui spd
+./.local/bin/say/say.sh gui spd
 ```
 
 ## Commands

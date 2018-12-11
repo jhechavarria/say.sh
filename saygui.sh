@@ -2,7 +2,7 @@
 
 # Base paths
 P2WFILE="say"
-ROOTPATH="$HOME/bin/say/"
+ROOTPATH="$HOME/.local/bin/say/"
 SRCPATH="$ROOTPATH$P2WFILE.sh"
 GUIPATH="$ROOTPATH$P2WFILEgui.sh"
 CFGPATH="$ROOTPATH$P2WFILE.cfg"
@@ -115,7 +115,7 @@ sayguilng()
 			"en-US" "English (US)" \
 			"en-GB" "English (GB)" \
 			"fr-FR" "French" \
-			"de-DE" "Deutsch" \
+			"de-DE" "German" \
 			"es-ES" "Spanish" \
 			"it-IT" "Italian" 2> /dev/null`
 

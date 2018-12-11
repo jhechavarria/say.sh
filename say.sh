@@ -7,7 +7,7 @@ SYSLNG="`echo $LANGUAGE | sed 's/_/-/g'`";
 P2WFILE="say";
 
 # Set paths
-ROOTPATH="$HOME/bin/say/"
+ROOTPATH="$HOME/.local/bin/say/"
 SRCPATH="$ROOTPATH$P2WFILE.sh"
 GUIPATH="$ROOTPATH${P2WFILE}gui.sh"
 CFGPATH="$ROOTPATH$P2WFILE.cfg"
