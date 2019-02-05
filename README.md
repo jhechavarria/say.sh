@@ -16,7 +16,7 @@ Before installing the script, you will need to install a few dependencies:
 To install all of them at once type the following command:
 
 ```
-sudo apt-get install libttspico-utils sox zenity xsel
+sudo apt-get install -y libttspico-utils sox zenity xsel
 ```
 
 **Warning:** As libttspico-utils is a non-free package, it may not be available in your default packqge repositories.
